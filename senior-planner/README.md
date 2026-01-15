@@ -74,19 +74,21 @@ Quality assurance that tests match your intent:
 
 ### Installation Methods
 
-#### Method 1: Install from GitHub (Recommended)
+#### Method 1: Install from Marketplace (Recommended)
 
 The simplest way to install this plugin:
 
 ```bash
 # 1. Add the marketplace
-/plugin marketplace add tmdgusya/senior-planner
+/plugin marketplace add tmdgusya/roach-claude-plugins
 
 # 2. Install the plugin
-/plugin install senior-planner@senior-planner
+/plugin install senior-planner@roach-claude-plugins
 ```
 
 That's it! The plugin will be available immediately.
+
+> **Note**: This plugin is part of the `roach-claude-plugins` marketplace, which contains multiple plugins.
 
 #### Method 2: Install from Local Directory
 
@@ -103,18 +105,20 @@ claude plugin install . --scope user
 
 #### Method 3: Install from Git URL (Alternative)
 
-Install directly using the full Git URL:
+Install the entire marketplace repository directly:
 
 ```bash
 # HTTPS
-claude plugin install https://github.com/tmdgusya/senior-planner.git --scope user
+claude plugin install https://github.com/tmdgusya/roach-claude-plugins.git --scope user
 
 # SSH
-claude plugin install git@github.com:tmdgusya/senior-planner.git --scope user
+claude plugin install git@github.com:tmdgusya/roach-claude-plugins.git --scope user
 
 # Specific branch or tag
-claude plugin install https://github.com/tmdgusya/senior-planner.git#develop --scope user
+claude plugin install https://github.com/tmdgusya/roach-claude-plugins.git#develop --scope user
 ```
+
+> **Note**: This installs all plugins in the marketplace, not just `senior-planner`.
 
 ### Installation Scopes
 
@@ -161,16 +165,16 @@ After installation, verify the plugin is available:
 **Common commands:**
 ```bash
 # Disable plugin temporarily
-/plugin disable senior-planner@senior-planner
+/plugin disable senior-planner@roach-claude-plugins
 
 # Re-enable plugin
-/plugin enable senior-planner@senior-planner
+/plugin enable senior-planner@roach-claude-plugins
 
 # Uninstall plugin
-/plugin uninstall senior-planner@senior-planner
+/plugin uninstall senior-planner@roach-claude-plugins
 
 # Update marketplace (pulls latest plugin versions)
-/plugin marketplace update senior-planner
+/plugin marketplace update roach-claude-plugins
 ```
 
 ### Troubleshooting Installation

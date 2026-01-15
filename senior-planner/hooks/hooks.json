@@ -1,0 +1,27 @@
+{
+  "description": "Senior Planner hooks for automatic planning suggestions and session wrap-up",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "\\b(plan|design|architect|spec|specification|planning|design document)\\b",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The user mentioned planning/design keywords. If this is a request for comprehensive feature planning (not just a casual mention), consider suggesting: 'For comprehensive planning with senior engineering team covering technical architecture, UX, security, TDD testing, performance, and integration - use /senior-planning [feature description]'. Only suggest if appropriate - don't interrupt casual conversation."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Session is ending. Check if significant work was done (new features implemented, architecture decisions made, patterns introduced). If yes, launch wrap-agent to capture session learnings and suggest documentation updates. If this was just a simple bug fix or trivial change, skip wrap-agent. Use your judgment - wrap-agent is for sessions that introduce new patterns or make architectural decisions.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
