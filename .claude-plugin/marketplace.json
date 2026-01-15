@@ -1,0 +1,19 @@
+{
+  "name": "roach-claude-plugins",
+  "owner": {
+    "name": "tmdgusya",
+    "email": "dev0jsh@gmail.com"
+  },
+  "metadata": {
+    "description": "A collection of Claude Code plugins for enhanced development workflows",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "senior-planner",
+      "source": "./senior-planner",
+      "description": "Senior engineering team conducts comprehensive interviews (technical, UX, security, performance, integration) to produce detailed Engineering Spec documents",
+      "version": "1.0.0"
+    }
+  ]
+}
