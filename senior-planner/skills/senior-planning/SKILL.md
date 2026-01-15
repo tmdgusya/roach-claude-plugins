@@ -25,8 +25,9 @@ Your senior engineering team consists of:
 7. **Performance Interviewer**: Scalability & performance optimization
 8. **Integration Interviewer**: External dependencies & deployment
 9. **Spec Writer**: Synthesizes all findings into SPEC.md
+10. **Implementation Planner**: Converts SPEC.md into explicit execution plan for cheaper models
 
-## Workflow Overview (60-90 minutes)
+## Workflow Overview (70-105 minutes)
 
 ```
 Discovery (5min) → Coding Standards (parallel, 5min)
@@ -47,7 +48,11 @@ Integration Interview (10min)
     ↓
 Spec Synthesis (10min)
     ↓
-SPEC.md Created ✓
+SPEC.md Created
+    ↓
+Implementation Planning (10-15min) ← NEW PHASE
+    ↓
+IMPLEMENTATION_PLAN.md Created ✓
 ```
 
 ## Phase 0: Setup
@@ -67,6 +72,7 @@ TodoWrite({
     {content: "Performance interview", status: "pending", activeForm: "Conducting performance interview"},
     {content: "Integration interview", status: "pending", activeForm: "Conducting integration interview"},
     {content: "Synthesize SPEC.md", status: "pending", activeForm: "Synthesizing specification"},
+    {content: "Create implementation plan", status: "pending", activeForm: "Creating implementation plan"},
     {content: "Review and deliver", status: "pending", activeForm: "Reviewing final specification"}
   ]
 });
@@ -405,6 +411,51 @@ Feature context: [brief feature description]"
 
 4. **Read SPEC.md** to verify completeness
 
+5. **Mark todo complete**, move to: "Create implementation plan"
+
+## Phase 9.5: Implementation Planning (10-15 min)
+
+**Goal**: Convert high-level SPEC.md into explicit, step-by-step implementation plan for cheaper models (GLM 4.7).
+
+**Actions**:
+1. **Mark todo as in_progress**: "Creating implementation plan"
+
+2. **Launch implementation-planner agent**:
+   ```
+   Task(implementation-planner): "Create explicit implementation plan from SPEC.md
+
+   Input: `.claude/SPEC.md` (just created by spec-writer)
+
+   Your mission:
+   - Eliminate ALL ambiguity - convert vague requirements to explicit steps
+   - Provide exact file paths for every file creation
+   - Generate detailed TDD cycles (RED→GREEN→REFACTOR) with complete code
+   - Create copy-paste ready boilerplate templates
+   - Sequence files by dependency order
+
+   Target audience: Cheaper models like GLM 4.7 that need explicit guidance
+
+   Output:
+   - `.claude/IMPLEMENTATION_PLAN.md` - Step-by-step execution plan
+   - Enhanced sections in SPEC.md (if needed)
+
+   Follow the templates:
+   - `templates/decision-table.md` for decision format
+   - `templates/tdd-cycle.md` for TDD cycle format
+   - `templates/spec-template.md` for reference
+
+   Make it so explicit that a junior developer (or GLM 4.7) can execute without asking questions."
+   ```
+
+3. **Wait for IMPLEMENTATION_PLAN.md to be created**
+
+4. **Read IMPLEMENTATION_PLAN.md** to verify:
+   - File sequence is dependency-ordered
+   - TDD cycles have complete code (RED, GREEN, REFACTOR)
+   - Boilerplate is copy-paste ready
+   - All ambiguities resolved
+   - Every file has explicit path
+
 5. **Mark todo complete**, move to: "Review and deliver"
 
 ## Phase 10: Review & Deliver (5 min)
@@ -425,13 +476,15 @@ Feature context: [brief feature description]"
 3. **Present summary to user**:
    ```markdown
    # Senior Planning Complete ✓
-   
-   ## Comprehensive Specification Created
-   
-   **Location**: `.claude/SPEC.md`
-   
+
+   ## Comprehensive Specification + Implementation Plan Created
+
+   **Locations**:
+   - `.claude/SPEC.md` - Engineering Specification (design & requirements)
+   - `.claude/IMPLEMENTATION_PLAN.md` - Step-by-step execution plan (for GLM 4.7 or any implementer)
+
    ## Interview Coverage
-   
+
    - ✅ Project Coding Standards (discovered and applied)
    - ✅ Technical Architecture (system design, APIs, data models)
    - ✅ User Experience (workflows, UI, accessibility)
@@ -440,27 +493,32 @@ Feature context: [brief feature description]"
    - ✅ Test Coverage Verification (validated against user intent)
    - ✅ Performance & Scalability (SLOs, caching, optimization)
    - ✅ Integration & Deployment (dependencies, rollout strategy)
-   
+   - ✅ Implementation Planning (explicit execution plan, zero ambiguity)
+
    ## Key Decisions Documented
-   
-   1. [Decision 1]: [Summary]
-   2. [Decision 2]: [Summary]
-   3. [Decision 3]: [Summary]
-   [... top 5 decisions]
-   
+
+   1. [Decision 1]: [Summary with code example]
+   2. [Decision 2]: [Summary with code example]
+   3. [Decision 3]: [Summary with code example]
+   [... top 5 decisions - all with code examples]
+
    ## Test Strategy
-   
+
    - **Approach**: [TDD / Pragmatic TDD / Outside-in / Inside-out]
    - **Coverage Goal**: [Percentage and scope]
    - **Test Cases**: [Number] comprehensive test cases with implementation guides
    - **Developer Guide**: Step-by-step RED→GREEN→REFACTOR workflow included
-   
+
    ## Implementation Readiness
-   
-   - **SPEC.md**: Complete and actionable
-   - **Test Cases**: Detailed with example code
+
+   - **SPEC.md**: Complete and actionable (design & "what/why")
+   - **IMPLEMENTATION_PLAN.md**: Explicit step-by-step guide ("how" with zero ambiguity)
+   - **Test Cases**: Detailed with complete code examples
    - **Coding Standards**: Documented and referenced
-   - **Ready for TDD Implementation**: Yes ✓
+   - **TDD Cycles**: Every component has RED→GREEN→REFACTOR with full code
+   - **Boilerplate**: Copy-paste ready templates included
+   - **File Sequence**: Dependency-ordered, exact paths specified
+   - **Ready for Cheap Model Execution (GLM 4.7)**: Yes ✓✓✓
    
    ## Next Steps
    
