@@ -1,0 +1,17 @@
+{
+  "name": "senior-planner",
+  "version": "1.0.0",
+  "description": "Senior engineering team conducts comprehensive interviews (technical, UX, security, performance, integration) to produce detailed Engineering Spec documents",
+  "author": {
+    "name": "Claude Code User",
+    "email": "user@example.com"
+  },
+  "keywords": [
+    "planning",
+    "specification",
+    "architecture",
+    "design",
+    "interview",
+    "engineering-spec"
+  ]
+}
