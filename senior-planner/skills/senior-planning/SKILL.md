@@ -17,42 +17,47 @@ You orchestrate a team of senior engineers who comprehensively interview the use
 
 Your senior engineering team consists of:
 1. **Code Rule Reader**: Discovers project coding standards
-2. **Tech Interviewer**: Technical architecture & system design
-3. **UX Interviewer**: User experience & interface design
-4. **Security Interviewer**: Security, compliance, & data protection
-5. **TDD Test Engineer**: Test strategy & comprehensive test cases
-6. **Test Coverage Verifier**: Validates test completeness
-7. **Performance Interviewer**: Scalability & performance optimization
-8. **Integration Interviewer**: External dependencies & deployment
-9. **Spec Writer**: Synthesizes all findings into SPEC.md
-10. **Implementation Planner**: Converts SPEC.md into explicit execution plan for cheaper models
+2. **Task Classifier** (NEW): Analyzes feature type and determines optimal interview plan
+3. **Tech Interviewer**: Technical architecture & system design (mandatory)
+4. **UX Interviewer**: User experience & interface design (conditional)
+5. **Security Interviewer**: Security, compliance, & data protection (mandatory)
+6. **TDD Test Engineer**: Test strategy & comprehensive test cases (mandatory)
+7. **Test Coverage Verifier**: Validates test completeness (mandatory)
+8. **Performance Interviewer**: Scalability & performance optimization (conditional)
+9. **Integration Interviewer**: External dependencies & deployment (conditional)
+10. **Spec Writer**: Synthesizes all findings into SPEC.md (mandatory)
+11. **Implementation Planner**: Converts SPEC.md into explicit execution plan for cheaper models (mandatory)
 
-## Workflow Overview (70-105 minutes)
+## Workflow Overview (65-105 minutes, optimized based on task type)
 
 ```
 Discovery (5min) → Coding Standards (parallel, 5min)
     ↓
-Technical Interview (15-20min)
+Task Classification (5min) ← NEW: Determines which interviews to run
     ↓
-UX Interview (10-15min)
+Technical Interview (15-20min) [MANDATORY]
     ↓
-Security Interview (10min)
+UX Interview (10-15min) [CONDITIONAL - skipped for backend-only]
     ↓
-TDD Test Engineering (20-30min)
+Security Interview (5-10min) [MANDATORY - brief or full]
     ↓
-Test Coverage Verification (10-15min)
+TDD Test Engineering (20-30min) [MANDATORY]
     ↓
-Performance Interview (10min)
+Test Coverage Verification (10-15min) [MANDATORY]
     ↓
-Integration Interview (10min)
+Performance Interview (10min) [CONDITIONAL - skipped if no scale concerns]
     ↓
-Spec Synthesis (10min)
+Integration Interview (10min) [CONDITIONAL - skipped if no external deps]
+    ↓
+Spec Synthesis (10min) [MANDATORY]
     ↓
 SPEC.md Created
     ↓
-Implementation Planning (10-15min) ← NEW PHASE
+Implementation Planning (10-15min) [MANDATORY]
     ↓
 IMPLEMENTATION_PLAN.md Created ✓
+
+Time savings: 20-40 min for clearly typed features (e.g., pure backend skips UX, perf)
 ```
 
 ## Phase 0: Setup
@@ -64,6 +69,7 @@ TodoWrite({
   todos: [
     {content: "Discovery & codebase understanding", status: "in_progress", activeForm: "Understanding codebase and requirements"},
     {content: "Read project coding standards", status: "pending", activeForm: "Reading coding standards"},
+    {content: "Classify task and plan interviews", status: "pending", activeForm: "Classifying task type and planning interviews"},
     {content: "Technical architecture interview", status: "pending", activeForm: "Conducting technical interview"},
     {content: "UX interview", status: "pending", activeForm: "Conducting UX interview"},
     {content: "Security interview", status: "pending", activeForm: "Conducting security interview"},
@@ -76,6 +82,8 @@ TodoWrite({
     {content: "Review and deliver", status: "pending", activeForm: "Reviewing final specification"}
   ]
 });
+
+**Note**: After Phase 1.8 (task classification), this todo list will be updated to remove skipped agents based on the execution plan.
 ```
 
 ## Phase 1: Discovery & Codebase Understanding (5 min)
@@ -136,7 +144,59 @@ Feature context: [brief feature description]"
 
 **Result**: Coding standards guide that all subsequent specifications will follow.
 
-## Phase 2: Technical Architecture Interview (15-20 min)
+## Phase 1.8: Task Classification & Execution Planning (5 min)
+
+**Goal**: Determine which interview agents are necessary based on feature type and context.
+
+**Actions**:
+1. **Mark todo as in_progress**: "Classifying task type and planning interviews"
+
+2. **Launch task-classifier agent**:
+   ```
+   Task(task-classifier): "Analyze feature requirements and determine optimal interview plan.
+
+   Feature description: [Original user request]
+
+   Discovery context:
+   - Discovery summary: [Summary from Phase 1]
+   - Coding standards: [Standards from Phase 1.5]
+   - Codebase patterns: [Patterns found during discovery]
+
+   Analyze the feature to determine:
+   1. Task type (Backend Only / Frontend Only / Full-Stack / Infrastructure)
+   2. Which interview agents must run (with reasoning and focus areas)
+   3. Which agents can be skipped (with justification)
+   4. Optimized execution plan with time estimates
+
+   Output comprehensive execution plan with classification analysis."
+   ```
+
+3. **Wait for classification complete**
+
+4. **Review classification output**: The agent will provide structured execution plan
+
+5. **Store classification for reference**: Will be passed to subsequent agents
+
+6. **Validate classification**:
+   - Task type is one of: Backend Only / Frontend Only / Full-Stack / Infrastructure
+   - At least 5 mandatory agents marked "to run"
+   - Security agent is never completely skipped
+   - All skip decisions have clear reasoning
+
+   **If validation fails**: Fall back to running all agents (current full behavior)
+
+7. **Update TodoWrite** to reflect actual agents being run:
+   - Remove skipped agents from todo list
+   - Update time estimates based on classification
+   - Keep all mandatory agents (tech, TDD, coverage, spec, implementation-planner)
+
+8. **Mark todo complete**, move to first interview in execution plan
+
+**Output**: Execution plan stored, todo list updated, ready for conditional interview execution.
+
+**Fallback Strategy**: If classification fails or produces invalid output, log error to user ("Classification couldn't complete, running full interview suite") and proceed with all agents to ensure comprehensive coverage.
+
+## Phase 2: Technical Architecture Interview (15-20 min) [MANDATORY]
 
 **Goal**: Deep understanding of technical design.
 
@@ -166,30 +226,37 @@ Feature context: [brief feature description]"
 
 4. **Review output**: Read technical interview summary
 
-5. **Mark todo complete**, move to: "UX interview"
+5. **Mark todo complete**, move to: "UX interview" (check execution plan first)
 
-## Phase 3: UX Interview (10-15 min)
+## Phase 3: UX Interview (10-15 min) [CONDITIONAL]
 
 **Goal**: Comprehensive user experience understanding.
 
-**Actions**:
+**Check Execution Plan**: Is `ux-interviewer` in the "To Run" list from Phase 1.8 classification?
+
+- **If YES (frontend or full-stack feature)**: Proceed with UX interview below
+- **If NO (backend-only or infrastructure)**: Skip to Phase 4 (Security Interview). The classification plan will provide brief UX guidance for spec-writer.
+
+**Actions** (if running):
 1. **Mark todo as in_progress**: "Conducting UX interview"
 
-2. **Launch ux-interviewer agent**:
+2. **Launch ux-interviewer agent with classification context**:
    ```
    Task(ux-interviewer): "Conduct comprehensive UX interview for [feature name].
-   
+
    Context:
    - Technical architecture: [Brief summary of technical decisions]
    - Coding standards: [Relevant UX/component standards]
-   
+   - Classification reasoning: [Why UX interview was selected from Phase 1.8]
+   - Focus areas: [Specific UX areas to emphasize from classification]
+
    Ask detailed questions about:
    - User workflows and journeys
    - Interface design and components
    - Accessibility requirements
    - Error handling and edge states
    - Responsive design
-   
+
    Continue until UX is fully specified.
    Produce structured UX summary."
    ```
@@ -200,9 +267,11 @@ Feature context: [brief feature description]"
 
 5. **Mark todo complete**, move to: "Security interview"
 
-## Phase 4: Security Interview (10 min)
+## Phase 4: Security Interview (5-10 min) [MANDATORY - may be brief]
 
 **Goal**: Security and compliance clarity.
+
+**Note**: Security interview always runs (never skipped) but may be brief (5 min) for low-risk features or full (10 min) for features handling sensitive data, as determined by Phase 1.8 classification.
 
 **Actions**:
 1. **Mark todo as in_progress**: "Conducting security interview"
@@ -300,24 +369,31 @@ Feature context: [brief feature description]"
 
 4. **Review verification report**
 
-5. **Mark todo complete**, move to: "Performance interview"
+5. **Mark todo complete**, move to: "Performance interview" (check execution plan first)
 
-## Phase 7: Performance Interview (10 min)
+## Phase 7: Performance Interview (10 min) [CONDITIONAL]
 
 **Goal**: Performance and scale requirements.
 
-**Actions**:
+**Check Execution Plan**: Is `performance-interviewer` in the "To Run" list from Phase 1.8 classification?
+
+- **If YES (performance-sensitive feature)**: Proceed with performance interview below
+- **IF NO (simple CRUD, no scale concerns)**: Skip to Phase 8 (Integration Interview). The classification plan will provide brief performance guidance for spec-writer.
+
+**Actions** (if running):
 1. **Mark todo as in_progress**: "Conducting performance interview"
 
-2. **Launch performance-interviewer agent**:
+2. **Launch performance-interviewer agent with classification context**:
    ```
    Task(performance-interviewer): "Conduct performance and scalability interview for [feature name].
-   
+
    Context:
    - Technical: [Architecture, data models]
    - UX: [User interactions, data displayed]
    - Security: [Security overhead considerations]
-   
+   - Classification reasoning: [Why performance interview was selected from Phase 1.8]
+   - Focus areas: [Specific performance areas to emphasize from classification]
+
    Ask about:
    - Performance SLOs (latency, throughput)
    - Expected scale (users, data volume)
@@ -325,7 +401,7 @@ Feature context: [brief feature description]"
    - Database optimization
    - Resource constraints
    - Monitoring requirements
-   
+
    Produce structured performance summary."
    ```
 
@@ -333,21 +409,28 @@ Feature context: [brief feature description]"
 
 4. **Review performance summary**
 
-5. **Mark todo complete**, move to: "Integration interview"
+5. **Mark todo complete**, move to: "Integration interview" (check execution plan first)
 
-## Phase 8: Integration Interview (10 min)
+## Phase 8: Integration Interview (10 min) [CONDITIONAL]
 
 **Goal**: Integration and deployment clarity.
 
-**Actions**:
+**Check Execution Plan**: Is `integration-interviewer` in the "To Run" list from Phase 1.8 classification?
+
+- **If YES (external dependencies or deployment complexity)**: Proceed with integration interview below
+- **IF NO (self-contained feature)**: Skip to Phase 9 (Spec Synthesis). The classification plan will provide brief integration guidance for spec-writer.
+
+**Actions** (if running):
 1. **Mark todo as in_progress**: "Conducting integration interview"
 
-2. **Launch integration-interviewer agent**:
+2. **Launch integration-interviewer agent with classification context**:
    ```
    Task(integration-interviewer): "Conduct integration and deployment interview for [feature name].
-   
+
    Context from all previous interviews.
-   
+   Classification reasoning: [Why integration interview was selected from Phase 1.8]
+   Focus areas: [Specific integration areas to emphasize from classification]
+
    Ask about:
    - External dependencies and third-party services
    - API integrations
@@ -356,7 +439,7 @@ Feature context: [brief feature description]"
    - Deployment strategy (rollout, feature flags)
    - Rollback procedures
    - Environment configuration
-   
+
    Produce structured integration summary."
    ```
 
@@ -376,32 +459,44 @@ Feature context: [brief feature description]"
 2. **Launch spec-writer agent**:
    ```
    Task(spec-writer): "Synthesize all interview findings into Engineering Specification at .claude/SPEC.md
-   
-   Input documents:
+
+   Classification context from Phase 1.8:
+   - Task type: [Backend Only / Frontend Only / Full-Stack / Infrastructure]
+   - Agents that ran: [List of interviews conducted]
+   - Agents that were skipped: [List with brief guidance for each]
+
+   Input documents (only interviews that actually ran):
    - Coding standards: [Summary]
-   - Technical interview: [Path or summary]
-   - UX interview: [Path or summary]
-   - Security interview: [Path or summary]
-   - TDD test specification: [Path or summary]
-   - Test coverage verification: [Path or summary]
-   - Performance interview: [Path or summary]
-   - Integration interview: [Path or summary]
-   
+   - Task classification: [Summary from Phase 1.8]
+   - Technical interview: [Path or summary] [MANDATORY - always present]
+   - UX interview: [Path or summary] [CONDITIONAL - may be skipped]
+   - Security interview: [Path or summary] [MANDATORY - always present, may be brief]
+   - TDD test specification: [Path or summary] [MANDATORY - always present]
+   - Test coverage verification: [Path or summary] [MANDATORY - always present]
+   - Performance interview: [Path or summary] [CONDITIONAL - may be skipped]
+   - Integration interview: [Path or summary] [CONDITIONAL - may be skipped]
+
+   For skipped agent sections:
+   - Include brief section based on classification guidance
+   - UX (if skipped): Brief section noting "No UI component, API-only interaction"
+   - Performance (if skipped): Brief section with standard expectations
+   - Integration (if skipped): Brief section noting self-contained feature
+
    Create comprehensive SPEC.md with all sections:
    1. Problem Statement
    2. Solution Design
    3. API/Interface Design
    4. Data Models
-   5. User Experience
+   5. User Experience (detailed if UX interview ran, brief if skipped)
    6. Technical Implementation
    7. Security & Compliance
-   8. Performance & Scalability
+   8. Performance & Scalability (detailed if perf interview ran, brief if skipped)
    9. Test Specification (with full TDD test cases)
-   10. Integration & Deployment
+   10. Integration & Deployment (detailed if integration interview ran, brief if skipped)
    11. Trade-offs & Alternatives
    12. Implementation Phases
    13. Risks & Mitigations
-   
+
    Resolve any conflicts between domains.
    Make everything specific and actionable.
    Output: .claude/SPEC.md"
@@ -619,14 +714,19 @@ If not in plan mode:
 - Exploratory work (use exploration agents instead)
 - Research questions (use research agents instead)
 
-## Estimated Duration
+## Estimated Duration (with task classification optimization)
 
-- **Quick features**: 45-60 minutes
-- **Standard features**: 60-75 minutes
-- **Complex features**: 75-90 minutes
-- **Very complex features**: 90-120 minutes
+**With Classification (Post Phase 1.8)**:
+- **Simple backend-only features**: 45-65 minutes (skips UX, perf, integration)
+- **Simple frontend-only features**: 50-75 minutes (skips integration, may skip perf)
+- **Standard full-stack features**: 75-90 minutes (runs most agents)
+- **Complex full-stack features**: 90-120 minutes (runs all agents)
 
-Time well spent - prevents bugs, rework, and misunderstandings.
+**Time Savings**: 20-40 minutes for clearly typed features by skipping irrelevant interviews
+
+**Original Full Suite** (without classification): 85-120 minutes for all features
+
+Time well spent - prevents bugs, rework, and misunderstandings. Classification ensures you only get relevant questions.
 
 ---
 

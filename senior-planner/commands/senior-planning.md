@@ -5,7 +5,7 @@ argument-hint: [feature description]
 
 # Senior Planning Command
 
-You are starting the **Senior Planning** workflow with a team of 10 specialized senior engineers.
+You are starting the **Senior Planning** workflow with a team of 11 specialized senior engineers.
 
 ## User's Feature Request
 
@@ -18,15 +18,17 @@ Orchestrate a comprehensive planning interview across all engineering domains to
 ## Team Available
 
 1. **Code Rule Reader** - Discovers project coding standards (runs in parallel during discovery)
-2. **Tech Interviewer** - Technical architecture & system design
-3. **UX Interviewer** - User experience & interface design
-4. **Security Interviewer** - Security, compliance, & data protection
-5. **TDD Test Engineer** - Test strategy & comprehensive test cases
-6. **Test Coverage Verifier** - Validates test completeness
-7. **Performance Interviewer** - Scalability & performance optimization
-8. **Integration Interviewer** - External dependencies & deployment
-9. **Spec Writer** - Synthesizes all findings into SPEC.md
-10. **Wrap Agent** - Captures session learnings (invoke when done or user says "wrap up")
+2. **Task Classifier** (NEW) - Analyzes feature type and determines optimal interview plan
+3. **Tech Interviewer** - Technical architecture & system design (mandatory)
+4. **UX Interviewer** - User experience & interface design (conditional)
+5. **Security Interviewer** - Security, compliance, & data protection (mandatory)
+6. **TDD Test Engineer** - Test strategy & comprehensive test cases (mandatory)
+7. **Test Coverage Verifier** - Validates test completeness (mandatory)
+8. **Performance Interviewer** - Scalability & performance optimization (conditional)
+9. **Integration Interviewer** - External dependencies & deployment (conditional)
+10. **Spec Writer** - Synthesizes all findings into SPEC.md (mandatory)
+11. **Implementation Planner** - Converts SPEC.md into explicit execution plan (mandatory)
+12. **Wrap Agent** - Captures session learnings (invoke when done or user says "wrap up")
 
 ## Workflow Instructions
 
@@ -43,20 +45,28 @@ Follow the **senior-planning skill** workflow exactly. The skill is located at `
 - Explore codebase for similar patterns
 - **In parallel**: Launch `code-rule-reader` agent to discover coding standards
 
-**Phase 2-9: Sequential Interviews**
-Launch agents in this order (each builds on previous context):
-1. `tech-interviewer` (15-20 min)
-2. `ux-interviewer` (10-15 min)
-3. `security-interviewer` (10 min)
-4. `tdd-test-engineer` (20-30 min)
-5. `test-coverage-verifier` (10-15 min)
-6. `performance-interviewer` (10 min)
-7. `integration-interviewer` (10 min)
-8. `spec-writer` (10 min)
+**Phase 1.8: Task Classification (5 min)** ← NEW
+- Launch `task-classifier` agent
+- Analyzes feature type (Backend / Frontend / Full-Stack / Infrastructure)
+- Determines which interviews are needed
+- Generates optimized execution plan
+- Updates TodoWrite to reflect agents being run
+
+**Phase 2-9: Conditional Interviews**
+Launch agents based on classification plan:
+1. `tech-interviewer` (15-20 min) [MANDATORY]
+2. `ux-interviewer` (10-15 min) [CONDITIONAL - skipped for backend-only]
+3. `security-interviewer` (5-10 min) [MANDATORY - brief or full]
+4. `tdd-test-engineer` (20-30 min) [MANDATORY]
+5. `test-coverage-verifier` (10-15 min) [MANDATORY]
+6. `performance-interviewer` (10 min) [CONDITIONAL - skipped if no scale concerns]
+7. `integration-interviewer` (10 min) [CONDITIONAL - skipped if no external deps]
+8. `spec-writer` (10 min) [MANDATORY]
+9. `implementation-planner` (10-15 min) [MANDATORY]
 
 **Phase 10: Deliver**
 - Present comprehensive summary
-- Show SPEC.md location
+- Show SPEC.md + IMPLEMENTATION_PLAN.md locations
 - Explain next steps (start TDD implementation)
 
 ## Important Guidelines
@@ -78,7 +88,11 @@ Launch agents in this order (each builds on previous context):
 - Complete, implementation-ready specification
 
 ### Time Commitment
-- Total: 60-90 minutes
+- **With Classification Optimization**: 45-90 minutes (depends on task type)
+  - Simple backend-only: 45-65 min (skips UX, perf, integration)
+  - Simple frontend-only: 50-75 min (skips integration, may skip perf)
+  - Full-stack features: 75-90 min (runs most/all agents)
+- **Time Savings**: 20-40 min for clearly typed features by skipping irrelevant interviews
 - This is comprehensive planning, not quick planning
 - Time investment prevents bugs and rework
 
@@ -106,10 +120,13 @@ Task(
 
 ## Success Criteria
 
-✅ All 9 domain interviews completed
+✅ Task type classified and optimal interview plan created
+✅ All mandatory domain interviews completed (tech, security, TDD, coverage, spec, implementation-planner)
+✅ Conditional interviews run based on feature type (UX, perf, integration)
 ✅ Test specifications comprehensive with TDD guides
 ✅ Test coverage verified against user intent
-✅ SPEC.md created with all 14 sections
+✅ SPEC.md created with all sections (detailed or brief based on classification)
+✅ IMPLEMENTATION_PLAN.md created with explicit execution steps
 ✅ User confirms spec matches their vision
 ✅ Ready for TDD implementation
 

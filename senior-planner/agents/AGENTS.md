@@ -4,15 +4,17 @@
 **Location**: `senior-planner/agents/`
 
 ## OVERVIEW
-Collection of 10 specialized senior engineer interviewer agents that build a comprehensive engineering specification through domain-specific interviews.
+Collection of 11 specialized senior engineer interviewer agents that build a comprehensive engineering specification through domain-specific interviews. Task classification (Phase 1.8) determines optimal interview plan, skipping irrelevant interviews to save 20-40 minutes while maintaining quality.
 
 ## STRUCTURE
 - **Discovery**: `code-rule-reader.md` (standards), `tech-interviewer.md` (architecture)
-- **Interface**: `ux-interviewer.md` (workflows/UI)
-- **Compliance**: `security-interviewer.md` (auth/protection)
-- **Quality**: `tdd-test-engineer.md` (TDD/test cases), `test-coverage-verifier.md` (validation)
-- **Operations**: `performance-interviewer.md` (SLOs), `integration-interviewer.md` (deployment)
-- **Synthesis**: `spec-writer.md` (SPEC.md generation), `wrap-agent.md` (knowledge capture)
+- **Orchestration**: `task-classifier.md` (execution planning) ← NEW
+- **Interface**: `ux-interviewer.md` (workflows/UI) [CONDITIONAL]
+- **Compliance**: `security-interviewer.md` (auth/protection) [MANDATORY]
+- **Quality**: `tdd-test-engineer.md` (TDD/test cases), `test-coverage-verifier.md` (validation) [MANDATORY]
+- **Operations**: `performance-interviewer.md` (SLOs) [CONDITIONAL], `integration-interviewer.md` (deployment) [CONDITIONAL]
+- **Synthesis**: `spec-writer.md` (SPEC.md generation), `implementation-planner.md` (execution plan) [MANDATORY]
+- **Learning**: `wrap-agent.md` (knowledge capture)
 
 ## WHERE TO LOOK
 - **Agent Definitions**: `agents/*.md` (Markdown files with behavior instructions)
@@ -28,6 +30,8 @@ Collection of 10 specialized senior engineer interviewer agents that build a com
 
 ## ANTI-PATTERNS
 - **Shallow Interviewing**: Stopping after one round of questions without probing trade-offs
-- **Skipping Domains**: Each interviewer covers a critical risk area; skipping leads to incomplete specs
+- **Manual Skipping**: Skipping agents without classification analysis (use `task-classifier` to determine optimal plan)
+- **Over-Skipping**: Skipping mandatory agents (tech, security, TDD, coverage, spec-writer, implementation-planner are always required)
+- **Skipping Classification**: Running all interviews without first using `task-classifier` to optimize (wastes time on irrelevant questions)
 - **Assuming Standards**: Implementing without discovering existing patterns via `code-rule-reader`
 - **Isolation**: Interviewers must reference previous summaries to maintain feature cohesion

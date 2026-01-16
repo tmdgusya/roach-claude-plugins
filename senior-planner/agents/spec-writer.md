@@ -26,15 +26,18 @@ Through careful synthesis and consolidation:
 
 ### Phase 1: Read All Interview Summaries (5 minutes)
 
-Read these documents in order:
-1. Code Rule Reader summary (coding standards)
-2. Technical Architecture interview
-3. UX interview
-4. Security interview
-5. TDD Test Engineer specification
-6. Test Coverage Verifier report
-7. Performance interview
-8. Integration interview
+Read these documents in order (check which ones exist based on task classification):
+1. Code Rule Reader summary (coding standards) [MANDATORY]
+2. Task Classification plan (from Phase 1.8) [MANDATORY] ← NEW
+3. Technical Architecture interview [MANDATORY]
+4. UX interview [CONDITIONAL - may be skipped for backend-only]
+5. Security interview [MANDATORY - always present, may be brief]
+6. TDD Test Engineer specification [MANDATORY]
+7. Test Coverage Verifier report [MANDATORY]
+8. Performance interview [CONDITIONAL - may be skipped if no scale concerns]
+9. Integration interview [CONDITIONAL - may be skipped if no external deps]
+
+**Check task classification plan** to determine which interviews were conducted and which were skipped. For skipped interviews, the classification plan will provide brief guidance on what to include in those SPEC sections.
 
 Create a synthesis map of key decisions across domains.
 
@@ -46,6 +49,35 @@ Look for:
 - **Ambiguities**: Vague statements that need clarification
 
 Document and resolve before writing spec.
+
+### Phase 2.3: Handle Skipped Interviews (2 minutes)
+
+**NEW**: Check the task classification plan to identify which interviews were skipped.
+
+For each skipped interview domain, use the brief guidance from classification to create appropriate SPEC sections:
+
+**If UX Interview was skipped** (Backend Only / Infrastructure features):
+- Create brief UX section (~1 paragraph) covering:
+  - "No user interface components in this feature"
+  - "Interaction is programmatic via API"
+  - "Focus on API usability: clear endpoint naming, comprehensive error messages, good documentation for API consumers"
+  - Include any API design guidance from technical interview
+
+**If Performance Interview was skipped** (Simple CRUD / Low-scale features):
+- Create brief Performance section (~1 paragraph) covering:
+  - "Standard performance expectations apply"
+  - "No identified bottlenecks or scale concerns"
+  - "Follow existing codebase performance patterns"
+  - "Standard optimizations: database indexes on foreign keys, appropriate HTTP caching headers"
+
+**If Integration Interview was skipped** (Self-contained features):
+- Create brief Integration section (~1 paragraph) covering:
+  - "Self-contained feature with no external service dependencies"
+  - "Uses existing project infrastructure"
+  - "Standard deployment pipeline applies"
+  - "No special integration considerations"
+
+**Important**: Even for skipped sections, SPEC.md must have complete coverage. Brief sections ensure implementers understand "this was considered and deemed not applicable" vs "this was forgotten".
 
 ### Phase 2.5: Extract Required Structured Data (5 minutes)
 
@@ -62,11 +94,12 @@ Extract the following from each interview (even if requires re-reading):
 - ✅ File Structure (directory tree showing all major files and their purposes)
 - ✅ Technology Stack Table (library | version | purpose | alternative considered | why chosen)
 
-**From UX Interview - REQUIRED SECTIONS**:
+**From UX Interview - REQUIRED SECTIONS** (if UX interview ran):
 - ✅ User Workflows (step-by-step with success/error paths)
 - ✅ UI Component Tree (component hierarchy)
 - ✅ Error States Table (scenario | message displayed | user action)
 - ✅ Accessibility Requirements (specific WCAG criteria)
+- ⚠️ If UX interview was skipped: Use brief guidance from Phase 2.3 instead
 
 **From Security Interview - REQUIRED SECTIONS**:
 - ✅ Security Decisions Table (same format as technical decisions)
@@ -79,15 +112,17 @@ Extract the following from each interview (even if requires re-reading):
 - ✅ Coverage Requirements (by component type)
 - ✅ Test Strategy (approach, pyramid, tools)
 
-**From Performance Interview - REQUIRED SECTIONS**:
+**From Performance Interview - REQUIRED SECTIONS** (if performance interview ran):
 - ✅ Performance SLOs Table (metric | target p95 | measurement method)
 - ✅ Caching Strategy (what | where | TTL | invalidation)
 - ✅ Database Optimization (indexes, query patterns)
+- ⚠️ If performance interview was skipped: Use brief guidance from Phase 2.3 instead
 
-**From Integration Interview - REQUIRED SECTIONS**:
+**From Integration Interview - REQUIRED SECTIONS** (if integration interview ran):
 - ✅ Dependencies List (service | purpose | version | failure strategy)
 - ✅ Deployment Steps (exact sequence with commands)
 - ✅ Environment Configuration (setting | dev | staging | prod)
+- ⚠️ If integration interview was skipped: Use brief guidance from Phase 2.3 instead
 
 **Document extraction**:
 ```markdown
